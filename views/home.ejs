@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/css/styles.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="d-flex justify-content-between mb-5">
+      <h1>Welcome back <%=user.username%></h1>
+      <img src="../uploads/<%= user.profilePic %>" alt="" class="profile-pic" />
+      <a href="/profile" class="btn btn-primary">My profile</a>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4>Chat rooms</h4>
+          <ul>
+            <% for (let channel of channels) { %>
+            <li><a href="/chat/<%= channel._id %>"><%=channel.name%></a></li>
+            <%}%>
+          </ul>
+        </div>
+        <div class="col">
+          <h4>Online right now</h4>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <form
+          action="/chat/createChannel"
+          method="POST"
+          class="d-flex justify-content-center flex-column"
+        >
+          <label class="text-center">Create New Room</label> <br />
+          <input type="text" name="channelName" placeholder="Set room name" />
+          <input type="submit" class="btn btn-primary" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
