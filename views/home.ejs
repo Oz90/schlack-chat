@@ -35,6 +35,8 @@
           <h4>Online right now</h4>
         </div>
       </div>
+
+      <% if (user.isAdmin === true) {%>
       <div class="row mt-5">
         <form
           action="/chat/createChannel"
@@ -46,6 +48,7 @@
           <input type="submit" class="btn btn-primary" />
         </form>
       </div>
+      <%}%>
     </div>
   </body>
 </html>

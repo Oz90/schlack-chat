@@ -184,6 +184,8 @@ app.post(
   userController.updateMe
 );
 
+app.post("/update-name", authController.protect, userController.updateName);
+
 app.use("/", userRouter);
 
 const port = 3000;

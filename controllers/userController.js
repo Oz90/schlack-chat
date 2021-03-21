@@ -50,6 +50,23 @@ exports.updateMe = catchAsync(async (req, res) => {
   }
 });
 
+exports.updateName = catchAsync(async (req, res) => {
+  const newName = req.body.newName;
+
+  User.findByIdAndUpdate(
+    req.user.id,
+    { $set: { username: newName } },
+    {
+      new: true,
+      runValidators: true
+    }
+  ).exec((err, data) => {
+    if (err) console.log(err);
+    console.log("Sucessfully edited user details.");
+    res.redirect(`/profile/`);
+  });
+});
+
 exports.getUser = (req, res) => {
   res.status(500).json({
     status: "error",

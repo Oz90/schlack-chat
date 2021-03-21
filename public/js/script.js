@@ -1,6 +1,9 @@
 const usersContainer = document.getElementById("users");
 const messageContainer = document.getElementById("chat-messages");
 const chatForm = document.getElementById("chat-form");
+// const profilePic = document.getElementById("hiddenInfo");
+// Bugg på  klientsidan att alla bilder blir samma (den användaren som är inloggads bild), oavsett vem som skickar
+// Har jag kunskaperna för att lösa detta? Fundera vidare.
 
 const socket = io();
 
@@ -16,6 +19,9 @@ socket.on("chatMessage", message => {
   const div = document.createElement("div");
   div.className = "d-flex justify-content-between";
   const editButton = document.createElement("button");
+  // const img = document.createElement("img");
+  // img.className = "avatar";
+  // img.src = "../../uploads/" + profilePic.innerHTML;
   editButton.className = `btn btn-sm btn-outline-dark`;
   editButton.innerHTML = "Edit";
   const element = document.createElement("p");
@@ -24,6 +30,7 @@ socket.on("chatMessage", message => {
   );
   element.append(newContent);
   div.append(element);
+  // div.append(img);
   div.append(editButton);
   messageContainer.append(div);
 });

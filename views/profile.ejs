@@ -16,7 +16,6 @@
   </head>
   <body>
     <h2>Profile page</h2>
-
     <h4>Update your profile picture here!</h4>
     <form
       action="/upload-profile-pic"
@@ -24,6 +23,13 @@
       enctype="multipart/form-data"
     >
       <input type="file" name="profile_pic" /> <br />
+      <input type="submit" value="Save" />
+    </form>
+
+    <h4>Update your name</h4>
+    <form action="/update-name" method="POST">
+      <label>Change your name:</label>
+      <input type="text" name="newName" /><br />
       <input type="submit" value="Save" />
     </form>
   </body>
