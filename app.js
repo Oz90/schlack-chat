@@ -69,7 +69,6 @@ io.use((socket, next) => {
     let channelURL = socket.handshake.headers.referer;
     const channelID = channelURL.split("/").slice(-1)[0];
     usersData[socket.id] = { ...userData, channelID };
-    // console.log("USERSDATA FROM APP.JS: " + usersData);
     next();
   });
 });
@@ -84,9 +83,13 @@ io.on("connection", socket => {
     .emit("message", `${usersData[socket.id].username} has joined the chat.`);
 
   socket.on("chatMessage", async message => {
+    const user = await User.findOne({ _id: usersData[socket.id].id });
+    console.log("USER:   " + user);
+
     io.to(usersData[socket.id].channelID).emit("chatMessage", {
       username: usersData[socket.id].username,
-      message
+      message,
+      profilePic: user.profilePic
     });
 
     const newMessage = new Message({
