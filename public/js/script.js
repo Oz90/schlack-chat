@@ -17,7 +17,9 @@ socket.on("message", message => {
 
 socket.on("chatMessage", message => {
   const div = document.createElement("div");
-  div.className = "d-flex justify-content-between";
+  div.className = "d-flex justify-content-between align-items-center";
+  const secondDiv = document.createElement("div");
+  secondDiv.className = "d-flex";
   const editButton = document.createElement("button");
   const img = document.createElement("img");
   img.className = "avatar";
@@ -29,8 +31,9 @@ socket.on("chatMessage", message => {
     message.username + ": " + message.message
   );
   element.append(newContent);
-  div.append(element);
-  div.append(img);
+  secondDiv.append(img);
+  secondDiv.append(element);
+  div.append(secondDiv);
   div.append(editButton);
   messageContainer.append(div);
 });

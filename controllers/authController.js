@@ -38,7 +38,26 @@ exports.register = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
-  createSendToken(newUser, req, res);
+  const token = jwt.sign(
+    {
+      id: newUser._id,
+      username: newUser.username,
+      profilePic: newUser.profilePic
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN
+    }
+  );
+
+  res.cookie("token", token, {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https"
+  });
+  res.redirect("/home");
 });
 
 exports.login = catchAsync(async (req, res, next) => {

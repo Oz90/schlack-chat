@@ -96,6 +96,7 @@ io.on("connection", socket => {
       user: usersData[socket.id].username,
       message
     });
+
     const newmsg = await newMessage.save();
     await Channel.updateOne(
       { _id: usersData[socket.id].channelID },
