@@ -23,6 +23,7 @@ dotenv.config({ path: "./config.env" });
 
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/userRoutes");
+const chatRouter = require("./routes/chatRoutes");
 
 app.use(fileUpload({ createParentPath: true }));
 
@@ -48,12 +49,8 @@ db.once("open", () => {
 
 app.set("view-engine", ejs);
 
-//const loginRouter = require("./routes/loginRoutes");
-
 // Middleware
 app.use(morgan("dev")); // Logging middleware som ger info om våra HTTP requests.
-//app.use(express.json()); // Gör så man kan använda body (samma som body-parser i äldre express versioner)
-// app.use(express.urlencoded({ extended: false }));
 
 const usersData = {};
 
@@ -118,16 +115,16 @@ io.on("connection", socket => {
 // Routes
 //app.use("/", loginRouter);
 
-app.get("/home", authController.protect, (req, res) => {
-  // console.log("USER REQUEST FROM APP.JS : " + req.user);
-  Channel.find({}).exec((error, channels) => {
-    if (error) {
-      return handleError(error);
-    }
-    //console.log(books);
-    res.render("home.ejs", { channels: channels, user: req.user });
-  });
-});
+// app.get("/home", authController.protect, (req, res) => {
+//   // console.log("USER REQUEST FROM APP.JS : " + req.user);
+//   Channel.find({}).exec((error, channels) => {
+//     if (error) {
+//       return handleError(error);
+//     }
+//     //console.log(books);
+//     res.render("home.ejs", { channels: channels, user: req.user });
+//   });
+// });
 
 app.get("/", (req, res) => {
   User.find({}).exec((error, users) => {
@@ -139,61 +136,51 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/login", (req, res) => {
-  res.render("login.ejs");
-});
-
-app.get("/register", (req, res) => {
-  res.render("register.ejs");
-});
-
-app.get("/chat/:id", authController.verifyAccess, async (req, res) => {
-  console.log(req.user);
-  const channelId = req.params.id;
-
-  Channel.find({ _id: channelId })
-    .populate(["Message", "User"])
-    .exec((error, channels) => {
-      if (error) {
-        return handleError(error);
-      }
-      res.render("chatroom.ejs", { channels: channels, user: req.user });
-    });
-
-  //console.log(channelId);
-});
-
-// app.post('/register', (req, res) => {
-//   console.log(req.body);
-//   const newUser = new User();
-//   newUser.username = req.body.username;
-//   newUser.email = req.body.email;
-//   newUser.password = req.body.password;
-//   newUser.passwordConfirm = req.body.passwordConfirm;
-
-//   newUser.save(function(err, data) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.redirect('/');
-//     }
-//   });
+// app.get("/login", (req, res) => {
+//   res.render("login.ejs");
 // });
 
-//app.post('/register', authController.register);
+// app.get("/register", (req, res) => {
+//   res.render("register.ejs");
+// });
 
-app.post(
-  "/upload-profile-pic",
-  authController.protect,
-  userController.updateMe
-);
+// app.get("/chat/:id", authController.protect, async (req, res) => {
+//   console.log(req.user);
+//   const channelId = req.params.id;
 
-app.post("/update-name", authController.protect, userController.updateName);
+//   Channel.find({ _id: channelId })
+//     .populate(["Message", "User"])
+//     .exec((error, channels) => {
+//       if (error) {
+//         return handleError(error);
+//       }
+//       res.render("chatroom.ejs", { channels: channels, user: req.user });
+//     });
 
-app.use("/", userRouter);
+//   //console.log(channelId);
+// });
+
+// app.post('/chat/createChannel', (req, res) => {
+//   const channelName = req.body.channelName;
+
+//   Channel.create({
+//     name: channelName
+//   });
+
+//   res.redirect('/home')
+// });
+
+// app.post(
+//   "/upload-profile-pic",
+//   authController.protect,
+//   userController.updateMe
+// );
+
+// app.post("/update-name", authController.protect, userController.updateName);
+
+app.use("/chat", chatRouter);
+app.use("/user", userRouter);
 
 const port = 3000;
 const ip = "127.0.0.1";
 server.listen(port, () => console.log(`listening on http://${ip}:${port}!`));
-
-//module.exports = app;

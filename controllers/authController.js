@@ -57,7 +57,7 @@ exports.register = catchAsync(async (req, res, next) => {
     httpOnly: true,
     secure: req.secure || req.headers["x-forwarded-proto"] === "https"
   });
-  res.redirect("/home");
+  res.redirect("/user/home");
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -91,7 +91,7 @@ exports.login = catchAsync(async (req, res, next) => {
     httpOnly: true,
     secure: req.secure || req.headers["x-forwarded-proto"] === "https"
   });
-  res.redirect("/home");
+  res.redirect("/user/home");
   // Remove password from output
   user.password = undefined;
 });
@@ -134,19 +134,14 @@ exports.verifyAccess = catchAsync(async (req, res, next) => {
     try {
       const channelID = req.params.id;
       if (!mongoose.isValidObjectId(channelID)) {
-        return res.redirect("/home");
+        return res.redirect("/user/home");
       }
       const currentChannel = await Channel.findOne({ _id: channelID });
       // console.log(currentChannel, "USERID: " + user.id);
       //Kollar om kanalen är privat och om användaren har tillgång till kanalen. Om inte, redirect.
-      if (currentChannel.private && !currentChannel.users.includes(user.id)) {
-        console.log("running");
-        res.redirect("/home");
-      } else {
-        //Kanalen är privat och användaren har tillgång eller kanalen är public. Oavsett har användaren tillgång
-        req.user = user;
-        next();
-      }
+      //Kanalen är privat och användaren har tillgång eller kanalen är public. Oavsett har användaren tillgång
+      req.user = user;
+      next();
     } catch (error) {
       res.send(error.message);
     }

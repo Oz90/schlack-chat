@@ -18,7 +18,7 @@
     <h2>Profile page</h2>
     <h4>Update your profile picture here!</h4>
     <form
-      action="/upload-profile-pic"
+      action="/user/upload-profile-pic"
       method="post"
       enctype="multipart/form-data"
     >
@@ -27,10 +27,12 @@
     </form>
 
     <h4>Update your name</h4>
-    <form action="/update-name" method="POST">
+    <form action="/user/update-name" method="POST">
       <label>Change your name:</label>
       <input type="text" name="newName" /><br />
       <input type="submit" value="Save" />
     </form>
+
+    <h4><a href="/user/home">Go back to home</a></h4>
   </body>
 </html>

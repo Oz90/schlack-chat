@@ -18,22 +18,21 @@
     <div class="d-flex justify-content-between mb-5">
       <h1>Welcome back <%=user.username%></h1>
       <img src="../uploads/<%= user.profilePic %>" alt="" class="profile-pic" />
-      <a href="/profile" class="btn btn-primary">My profile</a>
+      <a href="/user/profile" class="btn btn-primary">My profile</a>
     </div>
 
     <div class="container">
-      <div class="row">
-        <div class="col">
-          <h4>Chat rooms</h4>
-          <ul>
-            <% for (let channel of channels) { %>
-            <li><a href="/chat/<%= channel._id %>"><%=channel.name%></a></li>
-            <%}%>
-          </ul>
-        </div>
-        <div class="col">
-          <h4>Online right now</h4>
-        </div>
+      <div class="d-flex flex-column justify-content-center">
+        <h2 class="text-center">Chat rooms</h2>
+        <ul class="text-center">
+          <% for (let channel of channels) { %>
+          <li>
+            <a href="/chat/<%= channel._id %>" class="btn btn-primary m-1"
+              ><%=channel.name%></a
+            >
+          </li>
+          <%}%>
+        </ul>
       </div>
 
       <% if (user.isAdmin === true) {%>
@@ -43,10 +42,24 @@
           method="POST"
           class="d-flex justify-content-center flex-column"
         >
-          <label class="text-center">Create New Room</label> <br />
+          <h2 class="text-center">Create New Room</h2>
+          <br />
           <input type="text" name="channelName" placeholder="Set room name" />
           <input type="submit" class="btn btn-primary" />
         </form>
+      </div>
+
+      <div class="d-flex flex-column justify-content-center">
+        <h2 class="text-center">Delete channels</h2>
+        <ul class="text-center">
+          <% for (let channel of channels) { %>
+          <li>
+            <a href="/chat/delete/<%= channel._id %>" class="btn btn-danger m-1"
+              ><%=channel.name%></a
+            >
+          </li>
+          <%}%>
+        </ul>
       </div>
       <%}%>
     </div>

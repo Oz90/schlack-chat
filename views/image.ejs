@@ -9,7 +9,9 @@
   <body>
     <h1>File uploaded!</h1>
     <% for (let image of images) { %>
-    <img src="<%= image %>" /> <br />
+    <img src=".<%= image %>" /> <br />
     <% } %>
+
+    <h4><a href="/user/home">Go back to home</a></h4>
   </body>
 </html>

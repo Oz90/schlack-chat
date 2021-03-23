@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Channel = require("../models/channelModel");
 const catchAsync = require("../utilities/catchAsync");
 
 const fileUpload = require("express-fileupload");
@@ -23,7 +24,7 @@ exports.getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
-exports.updateMe = catchAsync(async (req, res) => {
+exports.updatePic = catchAsync(async (req, res) => {
   console.log("HERE IS ID :" + req.user.id);
   const filteredBody = filterObj(req.body, "name", "email");
 
@@ -63,31 +64,31 @@ exports.updateName = catchAsync(async (req, res) => {
   ).exec((err, data) => {
     if (err) console.log(err);
     console.log("Sucessfully edited user details.");
-    res.redirect(`/profile/`);
+    res.redirect(`/user/profile/`);
   });
 });
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined."
+exports.showUserProfile = catchAsync(async (req, res) => {
+  console.log("PROFILE CLICK" + req.user.id);
+
+  User.find({}).exec((error, users) => {
+    if (error) {
+      return handleError(error);
+    }
+    res.render("profile.ejs", { users: users });
   });
-};
-exports.createUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined."
+});
+
+exports.userHome = catchAsync(async (req, res) => {
+  // console.log("USER REQUEST FROM APP.JS : " + req.user);
+  Channel.find({}).exec((error, channels) => {
+    if (error) {
+      return handleError(error);
+    }
+    //console.log(books);
+    res.render("home.ejs", {
+      channels: channels,
+      user: req.user
+    });
   });
-};
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined."
-  });
-};
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined."
-  });
-};
+});

@@ -43,7 +43,8 @@ socket.on("userStatusUpdate", usersData => {
   let arrayOfUsers = Object.entries(usersData).map(
     element => element[1].username
   );
-  console.log(arrayOfUsers);
+  console.log("ARRAY OF USERS: in script.js: " + arrayOfUsers);
+
   let filteredArray = arrayOfUsers.filter(
     (val, index) => arrayOfUsers.indexOf(val) === index
   );
@@ -52,19 +53,12 @@ socket.on("userStatusUpdate", usersData => {
     usersContainer.removeChild(usersContainer.firstChild);
   }
   for (user of filteredArray) {
-    const element = document.createElement("p");
+    const element = document.createElement("li");
     const PM = document.createElement("span");
     PM.append(document.createTextNode(user));
     element.append(PM);
     usersContainer.append(element);
   }
-
-  //Lägg till eventlistener på alla som emittar
-  document.querySelectorAll("p span").forEach(element => {
-    element.addEventListener("click", e => {
-      socket.emit("startPM", e.target.textContent);
-    });
-  });
 });
 
 chatForm.addEventListener("submit", e => {
