@@ -3,8 +3,6 @@ const app = express();
 const http = require("http");
 const morgan = require("morgan");
 const ejs = require("ejs");
-const authController = require("./controllers/authController");
-const userController = require("./controllers/userController");
 const User = require("./models/userModel");
 const Channel = require("./models/channelModel");
 const Message = require("./models/messageModel");
@@ -112,20 +110,6 @@ io.on("connection", socket => {
   });
 });
 
-// Routes
-//app.use("/", loginRouter);
-
-// app.get("/home", authController.protect, (req, res) => {
-//   // console.log("USER REQUEST FROM APP.JS : " + req.user);
-//   Channel.find({}).exec((error, channels) => {
-//     if (error) {
-//       return handleError(error);
-//     }
-//     //console.log(books);
-//     res.render("home.ejs", { channels: channels, user: req.user });
-//   });
-// });
-
 app.get("/", (req, res) => {
   User.find({}).exec((error, users) => {
     if (error) {
@@ -135,48 +119,6 @@ app.get("/", (req, res) => {
     res.render("index.ejs", { users: users });
   });
 });
-
-// app.get("/login", (req, res) => {
-//   res.render("login.ejs");
-// });
-
-// app.get("/register", (req, res) => {
-//   res.render("register.ejs");
-// });
-
-// app.get("/chat/:id", authController.protect, async (req, res) => {
-//   console.log(req.user);
-//   const channelId = req.params.id;
-
-//   Channel.find({ _id: channelId })
-//     .populate(["Message", "User"])
-//     .exec((error, channels) => {
-//       if (error) {
-//         return handleError(error);
-//       }
-//       res.render("chatroom.ejs", { channels: channels, user: req.user });
-//     });
-
-//   //console.log(channelId);
-// });
-
-// app.post('/chat/createChannel', (req, res) => {
-//   const channelName = req.body.channelName;
-
-//   Channel.create({
-//     name: channelName
-//   });
-
-//   res.redirect('/home')
-// });
-
-// app.post(
-//   "/upload-profile-pic",
-//   authController.protect,
-//   userController.updateMe
-// );
-
-// app.post("/update-name", authController.protect, userController.updateName);
 
 app.use("/chat", chatRouter);
 app.use("/user", userRouter);
