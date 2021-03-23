@@ -115,7 +115,6 @@ app.get("/", (req, res) => {
     if (error) {
       return handleError(error);
     }
-    //console.log(books);
     res.render("index.ejs", { users: users });
   });
 });
